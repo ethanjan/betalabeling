@@ -7,6 +7,23 @@ import (
 	"time"
 )
 
+func indexOf(element int, data []int) int {
+	for k, v := range data {
+		if element == v {
+			return k
+		}
+	}
+	return -1 //not found.
+}
+
+func makeRange(min, max int) []int {
+	a := make([]int, max-min+1)
+	for i := range a {
+		a[i] = min + i
+	}
+	return a
+}
+
 //This tells us if the labeling is actually a beta-labeling.
 func unique(intSlice []int) bool {
 	keys := make(map[int]bool)
@@ -60,39 +77,70 @@ func main() {
 	table[3] = []int{2, 4}
 	table[4] = []int{3, 5}
 	table[5] = []int{4}
-	edgeLabels := make([]int, len(edgeSet))
-	for {
-		n := rand.Intn(numVertices)
-		vertexSet[n] = numVertices - 1
+	edgeLabels := make([]int, numVertices-1)
+	maxDistance := numVertices - 1
 
-		forbiddenIndices := make([]int, 0)
+	allowedNumbers := makeRange(0, maxDistance)
 
-		magicNumber := table[n][rand.Intn(len(table[n]))]
+	forbiddenIndices := make([]int, 0)
 
-		vertexSet[magicNumber] = 0
+	firstIndex := rand.Intn(numVertices)
 
-		forbiddenIndices = append(forbiddenIndices, n)
-		forbiddenIndices = append(forbiddenIndices, magicNumber)
+	vertexSet[firstIndex] = maxDistance
 
-		allowedNumbers := []int{1, 2, 3, 4}
+	allowedNumbers = RemoveIndex(allowedNumbers, indexOf(vertexSet[firstIndex], allowedNumbers))
 
-		//fmt.Println(forbiddenIndices)
+	forbiddenIndices = append(forbiddenIndices, firstIndex)
 
-		for i, _ := range vertexSet {
-			if !contains(forbiddenIndices, i) {
-				numB := rand.Intn(len(allowedNumbers))
-				vertexSet[i] = allowedNumbers[numB]
-				allowedNumbers = RemoveIndex(allowedNumbers, numB)
-				forbiddenIndices = append(forbiddenIndices, i)
-			}
+	fmt.Println(allowedNumbers)
+
+	secondIndex := table[firstIndex][rand.Intn(len(table[firstIndex]))]
+
+	vertexSet[secondIndex] = int(math.Abs(float64(vertexSet[firstIndex] - maxDistance)))
+
+	allowedNumbers = RemoveIndex(allowedNumbers, indexOf(vertexSet[secondIndex], allowedNumbers))
+
+	forbiddenIndices = append(forbiddenIndices, secondIndex)
+
+	fmt.Println(allowedNumbers)
+
+	maxDistance--
+
+	randomNumber := forbiddenIndices[rand.Intn(len(forbiddenIndices))]
+
+	fmt.Println(randomNumber)
+
+	stuff := make([]int, len(table[randomNumber]))
+
+	copy(stuff, table[randomNumber])
+
+	coolSlice := make([]int, 0)
+
+	for _, v := range stuff {
+		if !contains(forbiddenIndices, v) {
+			coolSlice = append(coolSlice, v)
 		}
+	}
+	fmt.Println(coolSlice)
+	epicIndex := -1
 
-		for i := 0; i < len(edgeLabels); i++ {
-			edgeLabels[i] = int(math.Abs(float64(vertexSet[edgeSet[i][0]] - vertexSet[edgeSet[i][1]])))
+	if len(coolSlice) > 0 {
+		epicIndex = coolSlice[rand.Intn(len(coolSlice))]
+	}
+
+	fmt.Println(epicIndex)
+
+	for i, _ := range vertexSet {
+		if !contains(forbiddenIndices, i) {
+			numB := rand.Intn(len(allowedNumbers))
+			vertexSet[i] = allowedNumbers[numB]
+			allowedNumbers = RemoveIndex(allowedNumbers, numB)
+			forbiddenIndices = append(forbiddenIndices, i)
 		}
-		if unique(edgeLabels) {
-			break
-		}
+	}
+
+	for i := 0; i < len(edgeLabels); i++ {
+		edgeLabels[i] = int(math.Abs(float64(vertexSet[edgeSet[i][0]] - vertexSet[edgeSet[i][1]])))
 	}
 
 	fmt.Println("Vertices:", vertexSet)
