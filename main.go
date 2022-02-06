@@ -60,17 +60,50 @@ func RemoveIndex(s []int, index int) []int {
 //This is the main function.
 func main() {
 
-	numVertices := 6
+	numVertices := 7
 
 	rand.Seed(time.Now().Unix())
 	vertexSet := make([]int, numVertices)
 
 	edgeSet := make([][]int, numVertices-1)
 
-	for i := 0; i < len(edgeSet); i++ {
+	//This will generate the edges for any path graph.
+	/*for i := 0; i < len(edgeSet); i++ {
 		edgeSet[i] = make([]int, 2)
 		edgeSet[i][0] = i
 		edgeSet[i][1] = i + 1
+	}*/
+
+	//This will hopefully generate the edges for a binary tree with 7 vertices.
+	/*edgeSet[0] = make([]int, 2)
+	edgeSet[0][0] = 0
+	edgeSet[0][1] = 1
+	edgeSet[1] = make([]int, 2)
+	edgeSet[1][0] = 0
+	edgeSet[1][1] = 2
+	edgeSet[2] = make([]int, 2)
+	edgeSet[2][0] = 1
+	edgeSet[2][1] = 3
+	edgeSet[3] = make([]int, 2)
+	edgeSet[3][0] = 1
+	edgeSet[3][1] = 4
+	edgeSet[4] = make([]int, 2)
+	edgeSet[4][0] = 2
+	edgeSet[4][1] = 5
+	edgeSet[5] = make([]int, 2)
+	edgeSet[5][0] = 2
+	edgeSet[5][1] = 6*/
+	startingIncrement := 0
+	moreIncrement := 0
+	for i := 0; i < len(edgeSet); i += 2 {
+		edgeSet[i] = make([]int, 2)
+		edgeSet[i][0] = startingIncrement
+		edgeSet[i][1] = startingIncrement + 1 + moreIncrement
+		edgeSet[i+1] = make([]int, 2)
+		edgeSet[i+1][0] = startingIncrement
+		edgeSet[i+1][1] = startingIncrement + 2 + moreIncrement
+		startingIncrement++
+		moreIncrement++
 	}
 
 	//Extremely Inefficient Code
@@ -214,11 +247,15 @@ func main() {
 			edgeLabels[i] = int(math.Abs(float64(vertexSet[edgeSet[i][0]] - vertexSet[edgeSet[i][1]])))
 		}
 
-		fmt.Println("Vertices:", vertexSet)
+		/*fmt.Println("Vertices:", vertexSet)
 		fmt.Println("Edges:", edgeSet)
-		fmt.Println("Edge Labels:", edgeLabels)
+		fmt.Println("Edge Labels:", edgeLabels)*/
 		if unique(edgeLabels) {
+			fmt.Println("Vertices:", vertexSet)
+			fmt.Println("Edges:", edgeSet)
+			fmt.Println("Edge Labels:", edgeLabels)
 			break
 		}
 	}
+
 }
