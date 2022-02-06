@@ -84,128 +84,141 @@ func main() {
 
 	//fmt.Println(table)
 
-	table := make([][]int, numVertices)
+	for {
+		table := make([][]int, numVertices)
 
-	for i, _ := range table {
-		for j, _ := range edgeSet {
-			if contains(edgeSet[j], i) {
-				num := 0
-				for _, k := range edgeSet[j] {
-					if !(i == k) {
-						num = k
+		for i, _ := range table {
+			for j, _ := range edgeSet {
+				if contains(edgeSet[j], i) {
+					num := 0
+					for _, k := range edgeSet[j] {
+						if !(i == k) {
+							num = k
+						}
+					}
+					table[i] = append(table[i], num)
+				}
+			}
+		}
+
+		fmt.Println(table)
+
+		edgeLabels := make([]int, numVertices-1)
+		maxDistance := numVertices - 1
+
+		allowedNumbers := makeRange(0, maxDistance)
+
+		forbiddenIndices := make([]int, 0)
+
+		firstIndex := rand.Intn(numVertices)
+
+		vertexSet[firstIndex] = maxDistance
+
+		allowedNumbers = RemoveIndex(allowedNumbers, indexOf(vertexSet[firstIndex], allowedNumbers))
+
+		forbiddenIndices = append(forbiddenIndices, firstIndex)
+
+		//fmt.Println(allowedNumbers)
+
+		secondIndex := table[firstIndex][rand.Intn(len(table[firstIndex]))]
+
+		vertexSet[secondIndex] = int(math.Abs(float64(vertexSet[firstIndex] - maxDistance)))
+
+		allowedNumbers = RemoveIndex(allowedNumbers, indexOf(vertexSet[secondIndex], allowedNumbers))
+
+		forbiddenIndices = append(forbiddenIndices, secondIndex)
+
+		//fmt.Println(allowedNumbers)
+
+		maxDistance--
+		epicIndex := -1
+		//count := 0
+
+		theLength := len(allowedNumbers)
+		for len(allowedNumbers) > 0 {
+			for i := 0; i < len(forbiddenIndices); i++ {
+				randomNumber := forbiddenIndices[i]
+
+				stuff := make([]int, len(table[randomNumber]))
+
+				copy(stuff, table[randomNumber])
+
+				coolSlice := make([]int, 0)
+				for _, v := range stuff {
+					if !contains(forbiddenIndices, v) {
+						coolSlice = append(coolSlice, v)
 					}
 				}
-				table[i] = append(table[i], num)
+				//fmt.Println("Forbidden Indices", forbiddenIndices)
+				//fmt.Println("Cool Slice", coolSlice)
+				if len(coolSlice) > 0 {
+					epicIndex = coolSlice[rand.Intn(len(coolSlice))]
+					/*fmt.Println("Epic Index", epicIndex)
+					fmt.Println("Allowed Numbers", allowedNumbers)
+					fmt.Println(maxDistance)*/
+					if contains(allowedNumbers, int(math.Abs(float64(vertexSet[forbiddenIndices[i]]+maxDistance)))) {
+						vertexSet[epicIndex] = int(math.Abs(float64(vertexSet[forbiddenIndices[i]] + maxDistance)))
+						allowedNumbers = RemoveIndex(allowedNumbers, indexOf(vertexSet[epicIndex], allowedNumbers))
+						forbiddenIndices = append(forbiddenIndices, epicIndex)
+						maxDistance--
+						//fmt.Println("Max Distance", maxDistance)
+						break
+					}
+					if contains(allowedNumbers, int(math.Abs(float64(vertexSet[forbiddenIndices[i]]-maxDistance)))) {
+						vertexSet[epicIndex] = int(math.Abs(float64(vertexSet[forbiddenIndices[i]] - maxDistance)))
+						allowedNumbers = RemoveIndex(allowedNumbers, indexOf(vertexSet[epicIndex], allowedNumbers))
+						forbiddenIndices = append(forbiddenIndices, epicIndex)
+						maxDistance--
+						//fmt.Println("Max Distance", maxDistance)
+						break
+					}
+				}
+			}
+			/*fmt.Println("Vertices:", vertexSet)
+			fmt.Println("Edges:", edgeSet)
+			fmt.Println("Edge Labels:", edgeLabels)*/
+
+			theLength--
+			if theLength < -5 {
+				break
+			}
+
+			/*count++
+			if count > 50 {
+				break
+			}*/
+
+		}
+
+		//fmt.Println(epicIndex)
+
+		for i := 0; i < len(vertexSet); i++ {
+			if !contains(forbiddenIndices, i) {
+				n := allowedNumbers[rand.Intn(len(allowedNumbers))]
+				vertexSet[i] = n
+				allowedNumbers = RemoveIndex(allowedNumbers, indexOf(n, allowedNumbers))
 			}
 		}
-	}
 
-	fmt.Println(table)
-
-	edgeLabels := make([]int, numVertices-1)
-	maxDistance := numVertices - 1
-
-	allowedNumbers := makeRange(0, maxDistance)
-
-	forbiddenIndices := make([]int, 0)
-
-	firstIndex := rand.Intn(numVertices)
-
-	vertexSet[firstIndex] = maxDistance
-
-	allowedNumbers = RemoveIndex(allowedNumbers, indexOf(vertexSet[firstIndex], allowedNumbers))
-
-	forbiddenIndices = append(forbiddenIndices, firstIndex)
-
-	//fmt.Println(allowedNumbers)
-
-	secondIndex := table[firstIndex][rand.Intn(len(table[firstIndex]))]
-
-	vertexSet[secondIndex] = int(math.Abs(float64(vertexSet[firstIndex] - maxDistance)))
-
-	allowedNumbers = RemoveIndex(allowedNumbers, indexOf(vertexSet[secondIndex], allowedNumbers))
-
-	forbiddenIndices = append(forbiddenIndices, secondIndex)
-
-	//fmt.Println(allowedNumbers)
-
-	maxDistance--
-	epicIndex := -1
-	count := 0
-	for len(allowedNumbers) > 0 {
-		for i := 0; i < len(forbiddenIndices); i++ {
-			randomNumber := forbiddenIndices[i]
-
-			stuff := make([]int, len(table[randomNumber]))
-
-			copy(stuff, table[randomNumber])
-
-			coolSlice := make([]int, 0)
-			for _, v := range stuff {
-				if !contains(forbiddenIndices, v) {
-					coolSlice = append(coolSlice, v)
+		/*
+			for i, _ := range vertexSet {
+				if !contains(forbiddenIndices, i) {
+					numB := rand.Intn(len(allowedNumbers))
+					vertexSet[i] = allowedNumbers[numB]
+					allowedNumbers = RemoveIndex(allowedNumbers, numB)
+					forbiddenIndices = append(forbiddenIndices, i)
 				}
-			}
-			//fmt.Println("Forbidden Indices", forbiddenIndices)
-			//fmt.Println("Cool Slice", coolSlice)
-			if len(coolSlice) > 0 {
-				epicIndex = coolSlice[rand.Intn(len(coolSlice))]
-				/*fmt.Println("Epic Index", epicIndex)
-				fmt.Println("Allowed Numbers", allowedNumbers)
-				fmt.Println(maxDistance)*/
-				if contains(allowedNumbers, int(math.Abs(float64(vertexSet[forbiddenIndices[i]]+maxDistance)))) {
-					vertexSet[epicIndex] = int(math.Abs(float64(vertexSet[forbiddenIndices[i]] + maxDistance)))
-					allowedNumbers = RemoveIndex(allowedNumbers, indexOf(vertexSet[epicIndex], allowedNumbers))
-					forbiddenIndices = append(forbiddenIndices, epicIndex)
-					maxDistance--
-					//fmt.Println("Max Distance", maxDistance)
-					break
-				}
-				if contains(allowedNumbers, int(math.Abs(float64(vertexSet[forbiddenIndices[i]]-maxDistance)))) {
-					vertexSet[epicIndex] = int(math.Abs(float64(vertexSet[forbiddenIndices[i]] - maxDistance)))
-					allowedNumbers = RemoveIndex(allowedNumbers, indexOf(vertexSet[epicIndex], allowedNumbers))
-					forbiddenIndices = append(forbiddenIndices, epicIndex)
-					maxDistance--
-					//fmt.Println("Max Distance", maxDistance)
-					break
-				}
-			}
+			}*/
+
+		for i := 0; i < len(edgeLabels); i++ {
+			edgeLabels[i] = int(math.Abs(float64(vertexSet[edgeSet[i][0]] - vertexSet[edgeSet[i][1]])))
 		}
-		/*fmt.Println("Vertices:", vertexSet)
+
+		fmt.Println("Vertices:", vertexSet)
 		fmt.Println("Edges:", edgeSet)
-		fmt.Println("Edge Labels:", edgeLabels)*/
-		count++
-		if count > 50 {
+		fmt.Println("Edge Labels:", edgeLabels)
+		if unique(edgeLabels) {
 			break
 		}
 	}
-
-	//fmt.Println(epicIndex)
-
-	for i := 0; i < len(vertexSet); i++ {
-		if !contains(forbiddenIndices, i) {
-			n := allowedNumbers[rand.Intn(len(allowedNumbers))]
-			vertexSet[i] = n
-			allowedNumbers = RemoveIndex(allowedNumbers, indexOf(n, allowedNumbers))
-		}
-	}
-
-	/*
-		for i, _ := range vertexSet {
-			if !contains(forbiddenIndices, i) {
-				numB := rand.Intn(len(allowedNumbers))
-				vertexSet[i] = allowedNumbers[numB]
-				allowedNumbers = RemoveIndex(allowedNumbers, numB)
-				forbiddenIndices = append(forbiddenIndices, i)
-			}
-		}*/
-
-	for i := 0; i < len(edgeLabels); i++ {
-		edgeLabels[i] = int(math.Abs(float64(vertexSet[edgeSet[i][0]] - vertexSet[edgeSet[i][1]])))
-	}
-
-	fmt.Println("Vertices:", vertexSet)
-	fmt.Println("Edges:", edgeSet)
-	fmt.Println("Edge Labels:", edgeLabels)
-
 }
