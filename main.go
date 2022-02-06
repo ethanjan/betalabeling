@@ -7,6 +7,7 @@ import (
 	"time"
 )
 
+//This gives the index of an element in a slice.
 func indexOf(element int, data []int) int {
 	for k, v := range data {
 		if element == v {
@@ -16,6 +17,7 @@ func indexOf(element int, data []int) int {
 	return -1 //not found.
 }
 
+//This creates a new slice containing a specific range of numbers.
 func makeRange(min, max int) []int {
 	a := make([]int, max-min+1)
 	for i := range a {
@@ -40,6 +42,7 @@ func unique(intSlice []int) bool {
 	return isUnique
 }
 
+//This informs us if an element is contained in a slice.
 func contains(s []int, str int) bool {
 	for _, v := range s {
 		if v == str {
@@ -49,6 +52,7 @@ func contains(s []int, str int) bool {
 	return false
 }
 
+//This removes an element at a specific index in an array.
 func RemoveIndex(s []int, index int) []int {
 	return append(s[:index], s[index+1:]...)
 }
@@ -70,13 +74,34 @@ func main() {
 	}
 
 	//Extremely Inefficient Code
-	table := make([][]int, numVertices)
+	/*table := make([][]int, numVertices)
 	table[0] = []int{1}
 	table[1] = []int{0, 2}
 	table[2] = []int{1, 3}
 	table[3] = []int{2, 4}
 	table[4] = []int{3, 5}
-	table[5] = []int{4}
+	table[5] = []int{4}*/
+
+	//fmt.Println(table)
+
+	table := make([][]int, numVertices)
+
+	for i, _ := range table {
+		for j, _ := range edgeSet {
+			if contains(edgeSet[j], i) {
+				num := 0
+				for _, k := range edgeSet[j] {
+					if !(i == k) {
+						num = k
+					}
+				}
+				table[i] = append(table[i], num)
+			}
+		}
+	}
+
+	fmt.Println(table)
+
 	edgeLabels := make([]int, numVertices-1)
 	maxDistance := numVertices - 1
 
@@ -92,7 +117,7 @@ func main() {
 
 	forbiddenIndices = append(forbiddenIndices, firstIndex)
 
-	fmt.Println(allowedNumbers)
+	//fmt.Println(allowedNumbers)
 
 	secondIndex := table[firstIndex][rand.Intn(len(table[firstIndex]))]
 
@@ -102,7 +127,7 @@ func main() {
 
 	forbiddenIndices = append(forbiddenIndices, secondIndex)
 
-	fmt.Println(allowedNumbers)
+	//fmt.Println(allowedNumbers)
 
 	maxDistance--
 	epicIndex := -1
@@ -121,19 +146,19 @@ func main() {
 					coolSlice = append(coolSlice, v)
 				}
 			}
-			fmt.Println("Forbidden Indices", forbiddenIndices)
-			fmt.Println("Cool Slice", coolSlice)
+			//fmt.Println("Forbidden Indices", forbiddenIndices)
+			//fmt.Println("Cool Slice", coolSlice)
 			if len(coolSlice) > 0 {
 				epicIndex = coolSlice[rand.Intn(len(coolSlice))]
-				fmt.Println("Epic Index", epicIndex)
+				/*fmt.Println("Epic Index", epicIndex)
 				fmt.Println("Allowed Numbers", allowedNumbers)
-				fmt.Println(maxDistance)
+				fmt.Println(maxDistance)*/
 				if contains(allowedNumbers, int(math.Abs(float64(vertexSet[forbiddenIndices[i]]+maxDistance)))) {
 					vertexSet[epicIndex] = int(math.Abs(float64(vertexSet[forbiddenIndices[i]] + maxDistance)))
 					allowedNumbers = RemoveIndex(allowedNumbers, indexOf(vertexSet[epicIndex], allowedNumbers))
 					forbiddenIndices = append(forbiddenIndices, epicIndex)
 					maxDistance--
-					fmt.Println("Max Distance", maxDistance)
+					//fmt.Println("Max Distance", maxDistance)
 					break
 				}
 				if contains(allowedNumbers, int(math.Abs(float64(vertexSet[forbiddenIndices[i]]-maxDistance)))) {
@@ -141,21 +166,21 @@ func main() {
 					allowedNumbers = RemoveIndex(allowedNumbers, indexOf(vertexSet[epicIndex], allowedNumbers))
 					forbiddenIndices = append(forbiddenIndices, epicIndex)
 					maxDistance--
-					fmt.Println("Max Distance", maxDistance)
+					//fmt.Println("Max Distance", maxDistance)
 					break
 				}
 			}
 		}
-		fmt.Println("Vertices:", vertexSet)
+		/*fmt.Println("Vertices:", vertexSet)
 		fmt.Println("Edges:", edgeSet)
-		fmt.Println("Edge Labels:", edgeLabels)
+		fmt.Println("Edge Labels:", edgeLabels)*/
 		count++
-		if count > 10 {
+		if count > 50 {
 			break
 		}
 	}
 
-	fmt.Println(epicIndex)
+	//fmt.Println(epicIndex)
 
 	for i := 0; i < len(vertexSet); i++ {
 		if !contains(forbiddenIndices, i) {
