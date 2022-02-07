@@ -60,7 +60,7 @@ func RemoveIndex(s []int, index int) []int {
 //This is the main function.
 func main() {
 
-	numVertices := 7
+	numVertices := 16
 
 	rand.Seed(time.Now().Unix())
 	vertexSet := make([]int, numVertices)
@@ -93,7 +93,8 @@ func main() {
 	edgeSet[5] = make([]int, 2)
 	edgeSet[5][0] = 2
 	edgeSet[5][1] = 6*/
-	startingIncrement := 0
+
+	/*startingIncrement := 0
 	moreIncrement := 0
 	for i := 0; i < len(edgeSet); i += 2 {
 		edgeSet[i] = make([]int, 2)
@@ -104,7 +105,59 @@ func main() {
 		edgeSet[i+1][1] = startingIncrement + 2 + moreIncrement
 		startingIncrement++
 		moreIncrement++
+	}*/
+
+	//This function generates the edges for a very specific type of caterpillar graph.
+	/*edgeSet[0] = make([]int, 2)
+	edgeSet[0][0] = 0
+	edgeSet[0][1] = 1
+	for i := 1; i < len(edgeSet); {
+		for j := 0; j < 4; j++ {
+			edgeSet[i+j] = make([]int, 2)
+			edgeSet[i+j][0] = i
+			edgeSet[i+j][1] = i + j + 1
+		}
+		i += 4
+	}*/
+	//This function generates the edges for an extended star graph.
+	for i := 0; i < 5; i++ {
+		edgeSet[i] = make([]int, 2)
+		edgeSet[i][0] = i
+		edgeSet[i][1] = i + 1
 	}
+	edgeSet[5] = make([]int, 2)
+	edgeSet[5][0] = 5
+	edgeSet[5][1] = 6
+
+	edgeSet[6] = make([]int, 2)
+	edgeSet[6][0] = 5
+	edgeSet[6][1] = 7
+
+	edgeSet[7] = make([]int, 2)
+	edgeSet[7][0] = 7
+	edgeSet[7][1] = 8
+
+	edgeSet[8] = make([]int, 2)
+	edgeSet[8][0] = 5
+	edgeSet[8][1] = 9
+
+	for i := 9; i < 11; i++ {
+		edgeSet[i] = make([]int, 2)
+		edgeSet[i][0] = i
+		edgeSet[i][1] = i + 1
+	}
+
+	edgeSet[11] = make([]int, 2)
+	edgeSet[11][0] = 5
+	edgeSet[11][1] = 12
+
+	for i := 12; i < len(edgeSet); i++ {
+		edgeSet[i] = make([]int, 2)
+		edgeSet[i][0] = i
+		edgeSet[i][1] = i + 1
+	}
+
+	fmt.Println(edgeSet)
 
 	//Extremely Inefficient Code
 	/*table := make([][]int, numVertices)
