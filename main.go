@@ -60,7 +60,7 @@ func RemoveIndex(s []int, index int) []int {
 //This is the main function.
 func main() {
 
-	numVertices := 16
+	numVertices := 29
 
 	rand.Seed(time.Now().Unix())
 	vertexSet := make([]int, numVertices)
@@ -120,7 +120,7 @@ func main() {
 		i += 4
 	}*/
 	//This function generates the edges for an extended star graph.
-	for i := 0; i < 5; i++ {
+	/*for i := 0; i < 5; i++ {
 		edgeSet[i] = make([]int, 2)
 		edgeSet[i][0] = i
 		edgeSet[i][1] = i + 1
@@ -155,9 +155,66 @@ func main() {
 		edgeSet[i] = make([]int, 2)
 		edgeSet[i][0] = i
 		edgeSet[i][1] = i + 1
+	}*/
+
+	for i := 0; i < 7; i++ {
+		edgeSet[i] = make([]int, 2)
+		edgeSet[i][0] = i
+		edgeSet[i][1] = i + 1
+	}
+	edgeSet[7] = make([]int, 2)
+	edgeSet[7][0] = 7
+	edgeSet[7][1] = 8
+
+	edgeSet[8] = make([]int, 2)
+	edgeSet[8][0] = 7
+	edgeSet[8][1] = 9
+
+	edgeSet[9] = make([]int, 2)
+	edgeSet[9][0] = 9
+	edgeSet[9][1] = 10
+
+	edgeSet[10] = make([]int, 2)
+	edgeSet[10][0] = 7
+	edgeSet[10][1] = 11
+
+	for i := 11; i < 13; i++ {
+		edgeSet[i] = make([]int, 2)
+		edgeSet[i][0] = i
+		edgeSet[i][1] = i + 1
 	}
 
-	fmt.Println(edgeSet)
+	edgeSet[13] = make([]int, 2)
+	edgeSet[13][0] = 7
+	edgeSet[13][1] = 14
+
+	for i := 14; i < 17; i++ {
+		edgeSet[i] = make([]int, 2)
+		edgeSet[i][0] = i
+		edgeSet[i][1] = i + 1
+	}
+
+	edgeSet[17] = make([]int, 2)
+	edgeSet[17][0] = 7
+	edgeSet[17][1] = 18
+
+	for i := 18; i < 22; i++ {
+		edgeSet[i] = make([]int, 2)
+		edgeSet[i][0] = i
+		edgeSet[i][1] = i + 1
+	}
+
+	edgeSet[22] = make([]int, 2)
+	edgeSet[22][0] = 7
+	edgeSet[22][1] = 23
+
+	for i := 23; i < len(edgeSet); i++ {
+		edgeSet[i] = make([]int, 2)
+		edgeSet[i][0] = i
+		edgeSet[i][1] = i + 1
+	}
+
+	//fmt.Println(edgeSet)
 
 	//Extremely Inefficient Code
 	/*table := make([][]int, numVertices)
@@ -187,7 +244,7 @@ func main() {
 			}
 		}
 
-		fmt.Println(table)
+		//fmt.Println(table)
 
 		edgeLabels := make([]int, numVertices-1)
 		maxDistance := numVertices - 1
