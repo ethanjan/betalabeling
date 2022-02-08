@@ -60,7 +60,7 @@ func RemoveIndex(s []int, index int) []int {
 //This is the main function.
 func main() {
 
-	numVertices := 29
+	numVertices := 37
 
 	rand.Seed(time.Now().Unix())
 	vertexSet := make([]int, numVertices)
@@ -157,7 +157,7 @@ func main() {
 		edgeSet[i][1] = i + 1
 	}*/
 
-	for i := 0; i < 7; i++ {
+	/*for i := 0; i < 7; i++ {
 		edgeSet[i] = make([]int, 2)
 		edgeSet[i][0] = i
 		edgeSet[i][1] = i + 1
@@ -209,6 +209,73 @@ func main() {
 	edgeSet[22][1] = 23
 
 	for i := 23; i < len(edgeSet); i++ {
+		edgeSet[i] = make([]int, 2)
+		edgeSet[i][0] = i
+		edgeSet[i][1] = i + 1
+	}*/
+
+	for i := 0; i < 8; i++ {
+		edgeSet[i] = make([]int, 2)
+		edgeSet[i][0] = i
+		edgeSet[i][1] = i + 1
+	}
+	edgeSet[8] = make([]int, 2)
+	edgeSet[8][0] = 8
+	edgeSet[8][1] = 9
+
+	edgeSet[9] = make([]int, 2)
+	edgeSet[9][0] = 8
+	edgeSet[9][1] = 10
+
+	edgeSet[10] = make([]int, 2)
+	edgeSet[10][0] = 10
+	edgeSet[10][1] = 11
+
+	edgeSet[11] = make([]int, 2)
+	edgeSet[11][0] = 8
+	edgeSet[11][1] = 12
+
+	for i := 12; i < 14; i++ {
+		edgeSet[i] = make([]int, 2)
+		edgeSet[i][0] = i
+		edgeSet[i][1] = i + 1
+	}
+
+	edgeSet[14] = make([]int, 2)
+	edgeSet[14][0] = 8
+	edgeSet[14][1] = 15
+
+	for i := 15; i < 18; i++ {
+		edgeSet[i] = make([]int, 2)
+		edgeSet[i][0] = i
+		edgeSet[i][1] = i + 1
+	}
+
+	edgeSet[18] = make([]int, 2)
+	edgeSet[18][0] = 8
+	edgeSet[18][1] = 19
+
+	for i := 19; i < 23; i++ {
+		edgeSet[i] = make([]int, 2)
+		edgeSet[i][0] = i
+		edgeSet[i][1] = i + 1
+	}
+
+	edgeSet[23] = make([]int, 2)
+	edgeSet[23][0] = 8
+	edgeSet[23][1] = 24
+
+	for i := 24; i < 29; i++ {
+		edgeSet[i] = make([]int, 2)
+		edgeSet[i][0] = i
+		edgeSet[i][1] = i + 1
+	}
+
+	edgeSet[29] = make([]int, 2)
+	edgeSet[29][0] = 8
+	edgeSet[29][1] = 30
+
+	for i := 30; i < len(edgeSet); i++ {
 		edgeSet[i] = make([]int, 2)
 		edgeSet[i][0] = i
 		edgeSet[i][1] = i + 1
@@ -322,7 +389,7 @@ func main() {
 			fmt.Println("Edge Labels:", edgeLabels)*/
 
 			theLength--
-			if theLength < -5 {
+			if theLength < -1 {
 				break
 			}
 
@@ -356,7 +423,7 @@ func main() {
 		for i := 0; i < len(edgeLabels); i++ {
 			edgeLabels[i] = int(math.Abs(float64(vertexSet[edgeSet[i][0]] - vertexSet[edgeSet[i][1]])))
 		}
-
+			
 		/*fmt.Println("Vertices:", vertexSet)
 		fmt.Println("Edges:", edgeSet)
 		fmt.Println("Edge Labels:", edgeLabels)*/
